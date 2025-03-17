@@ -24,6 +24,6 @@ jobs:
     # Step 3: Apply Kubernetes manifests
     - name: Deploy to k3s
       run: |
-        kubectl apply -f html-configmap.yaml
+        kubectl apply -f html-configmap.yaml --validate=false
         kubectl apply -f nginx-deployment.yaml
         kubectl apply -f nginx-service.yaml
