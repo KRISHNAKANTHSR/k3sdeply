@@ -1,0 +1,29 @@
+name: Deploy Nginx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up kubectl
+    - name: Set up kubectl
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        chmod 600 ~/.kube/config
+
+    # Step 3: Apply Kubernetes manifests
+    - name: Deploy to k3s
+      run: |
+        kubectl apply -f html-configmap.yaml
+        kubectl apply -f nginx-deployment.yaml
+        kubectl apply -f nginx-service.yaml
